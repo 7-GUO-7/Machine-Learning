@@ -34,15 +34,16 @@ parser.add_argument('--num_bags_train', type=int, default=200, metavar='NTrain',
                     help='number of bags in training set')
 parser.add_argument('--num_bags_test', type=int, default=50, metavar='NTest',
                     help='number of bags in test set')
-parser.add_argument('--seed', type=int, default=2, metavar='S',
+parser.add_argument('--seed', type=int, default=1, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='disables CUDA training')
 parser.add_argument('--model', type=str, default='attention', help='Choose b/w attention and gated_attention')
 
 args = parser.parse_args()
-args.cuda = not args.no_cuda and torch.cuda.is_available()
-# args.cuda = True
+# args.cuda = not args.no_cuda and torch.cuda.is_available()
+args.cuda = True
+
 
 torch.manual_seed(args.seed)
 if args.cuda:
@@ -59,7 +60,7 @@ train_loader = data_utils.DataLoader(TorchDataset(),
     #                                            num_bag=args.num_bags_train,
     #                                            seed=args.seed,
     #                                            train=True),
-                                     batch_size=1,
+                                     batch_size=100,
                                      shuffle=True,
                                      **loader_kwargs)
 

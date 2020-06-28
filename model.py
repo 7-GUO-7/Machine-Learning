@@ -21,7 +21,12 @@ class Attention(nn.Module):
             nn.Linear(self.D, self.K)
         )
 
-        self.proj = nn.Linear(self.L*self.K, 10)
+        self.proj = nn.Sequential(
+            nn.Linear(self.L*self.K, 100),
+            nn.ReLU(inplace=False),
+            nn.Linear(100, 10),
+            nn.Sigmoid()
+        )
 
     def forward(self, x):
         x = x.squeeze(0)
@@ -35,7 +40,7 @@ class Attention(nn.Module):
         M = torch.mm(A, H)  # KxL
         out = self.proj(M)
 
-        return torch.sigmoid(out)
+        return out
 
     # AUXILIARY METHODS
     def calculate_classification_error(self, X, Y):
